@@ -1,9 +1,9 @@
 <template>
-  <v-app style="background-color: #adceff"> 
+  <v-app style="background-color: #adceff">
     <v-container>
       <v-carousel
         v-model="currentSlide"
-        height="90vh"
+        :height="carouselHeight"
         hide-delimiters
         :show-arrows="false"
         class="custom-carousel"
@@ -18,25 +18,22 @@
             contain
             class="carousel-image"
           ></v-img>
-          <!-- <div class="caption">
-            <strong>{{ image.alt }}</strong>
-          </div> -->
         </v-carousel-item>
       </v-carousel>
 
       <!-- Navigation buttons -->
       <div class="carousel-controls">
         <v-btn @click="prevSlide">Anterior</v-btn>
-        <v-btn class="mx-2"
-  v-for="(image, index) in images"
-  :key="index"
-  :class="{ 'active-button': currentSlide === index }"
-  @click="goToSlide(index)"
->
-  {{ index + 1 }}
-</v-btn>
-
-        <v-btn @click="nextSlide">Proximo</v-btn>
+        <v-btn
+          class="mx-2"
+          v-for="(image, index) in images"
+          :key="index"
+          :class="{ 'active-button': currentSlide === index }"
+          @click="goToSlide(index)"
+        >
+          {{ index + 1 }}
+        </v-btn>
+        <v-btn @click="nextSlide">Próximo</v-btn>
       </div>
     </v-container>
   </v-app>
@@ -59,9 +56,16 @@ export default {
       ],
     };
   },
+  computed: {
+    carouselHeight() {
+      // Adjust height dynamically based on the screen size
+      return window.innerWidth < 600 ? '50vh' : '90vh';
+    },
+  },
   methods: {
     prevSlide() {
-      this.currentSlide = (this.currentSlide - 1 + this.images.length) % this.images.length;
+      this.currentSlide =
+        (this.currentSlide - 1 + this.images.length) % this.images.length;
     },
     nextSlide() {
       this.currentSlide = (this.currentSlide + 1) % this.images.length;
@@ -79,28 +83,40 @@ html {
 }
 
 .carousel-image {
-  height: 100vh;
+  height: 100%;
 }
 
 .caption {
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 10px;
 }
 
 .carousel-controls {
   display: flex;
   justify-content: center;
-  /* margin-top: 20px; */
-  /* gap: 10px; */
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .carousel-controls v-btn {
   min-width: 40px;
+  margin: 5px;
 }
+
 .active-button {
   background-color: #5c9bfa !important;
   color: #fff !important;
 }
 
+/* Responsiveness */
+@media (max-width: 600px) {
+  .carousel-image {
+    height: 50vh;
+  }
+  .carousel-controls {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
 </style>
