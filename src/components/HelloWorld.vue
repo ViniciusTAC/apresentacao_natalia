@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background-color: #adceff"> 
     <v-container>
       <v-carousel
         v-model="currentSlide"
@@ -27,9 +27,15 @@
       <!-- Navigation buttons -->
       <div class="carousel-controls">
         <v-btn @click="prevSlide">Anterior</v-btn>
-        <v-btn v-for="(image, index) in images" :key="index" @click="goToSlide(index)">
-          {{ index + 1 }}
-        </v-btn>
+        <v-btn class="mx-2"
+  v-for="(image, index) in images"
+  :key="index"
+  :class="{ 'active-button': currentSlide === index }"
+  @click="goToSlide(index)"
+>
+  {{ index + 1 }}
+</v-btn>
+
         <v-btn @click="nextSlide">Proximo</v-btn>
       </div>
     </v-container>
@@ -92,4 +98,9 @@ html {
 .carousel-controls v-btn {
   min-width: 40px;
 }
+.active-button {
+  background-color: #5c9bfa !important;
+  color: #fff !important;
+}
+
 </style>
